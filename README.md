@@ -1,6 +1,6 @@
 # Daily Coding Challenges
 
-This app delivers daily coding challenges&concepts for your interview preparations
+This app delivers daily coding challenges & concepts for your interview preparations
 
 # Features:
 # - Easy UI
