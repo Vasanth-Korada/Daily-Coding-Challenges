@@ -1,4 +1,4 @@
-# daily_coding_challenges
+Daily Coding Challenges
 
 A new Flutter application.
 
