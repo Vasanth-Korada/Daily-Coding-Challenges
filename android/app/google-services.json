@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "692569636040",
+    "firebase_url": "https://daily-coding-challenges.firebaseio.com",
+    "project_id": "daily-coding-challenges",
+    "storage_bucket": "daily-coding-challenges.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692569636040:android:1c5840773bcccebe5379fd",
+        "android_client_info": {
+          "package_name": "com.vktech.daily_coding_challenges"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "692569636040-2ikrponuogso91ktumu9l4o6dklg5b32.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vktech.daily_coding_challenges",
+            "certificate_hash": "74e509b057a8c96b8be71b138c6b313267f64841"
+          }
+        },
+        {
+          "client_id": "692569636040-5r92au7hp1r09hg7n46217vlie2oe18q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXmho09cHZ85ldLnYtEVoQT9HYUCMc7l8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "692569636040-5r92au7hp1r09hg7n46217vlie2oe18q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
