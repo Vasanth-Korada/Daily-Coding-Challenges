@@ -1,3 +1,4 @@
+import 'package:daily_coding_challenges/widgets/app-bar.dart';
 import 'package:daily_coding_challenges/widgets/share-widget.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
@@ -25,28 +26,7 @@ class _ConceptsDetailState extends State<ConceptsDetail> {
         ..show();
     });
     return Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                share();
-              },
-              icon: Icon(Icons.share),
-            )
-          ],
-          title: Text("${widget.title}"),
-          centerTitle: true,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                  Color(0xFF5AFF15),
-                  Color(0xFF00B712),
-                ])),
-          ),
-        ),
+        appBar: appBar("${widget.title}"),
         body: ListView(
           children: <Widget>[
             ExpansionTile(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_coding_challenges/coding-concepts.dart';
+import 'package:daily_coding_challenges/coding-quiz.dart';
 import 'package:daily_coding_challenges/widgets/share-widget.dart';
 import 'package:daily_coding_challenges/signin-page.dart';
 import 'package:daily_coding_challenges/solution-page.dart';
@@ -122,12 +123,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          InkWell(
-            child: IconButton(
-              onPressed: () {},
-              icon: searchIcon,
-            ),
-          ),
+          // InkWell(
+          //   child: IconButton(
+          //     onPressed: () {},
+          //     icon: searchIcon,
+          // //   ),
+          // ),
           InkWell(
             child: IconButton(
               onPressed: () {
@@ -174,6 +175,18 @@ class _HomePageState extends State<HomePage> {
               leading: Icon(Icons.book),
               title: Text(
                 "Coding Concepts",
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ),
+            new ListTile(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => CodingQuiz()));
+              },
+              leading: Icon(Icons.library_books),
+              title: Text(
+                "Coding Quiz",
                 style: TextStyle(fontSize: 16.0),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:daily_coding_challenges/concepts-detailed.dart';
 import 'package:daily_coding_challenges/crud.dart';
+import 'package:daily_coding_challenges/widgets/app-bar.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'shared/admob.dart';
@@ -43,28 +44,7 @@ class _CodingConceptsState extends State<CodingConcepts> {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              share();
-            },
-            icon: Icon(Icons.share),
-          )
-        ],
-        title: Text("Coding Concepts"),
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                Color(0xFF5AFF15),
-                Color(0xFF00B712),
-              ])),
-        ),
-      ),
+      appBar: appBar("Coding Concepts"),
       body: RefreshIndicator(onRefresh: _onRefresh, child: _dataList()),
     );
   }
@@ -91,38 +71,37 @@ class _CodingConceptsState extends State<CodingConcepts> {
                         snapshot.data.documents[i].data['description'];
                     var example = snapshot.data.documents[i].data['example'];
                     var lang = snapshot.data.documents[i].data['lang'];
-                    return 
-                       Card(
-                         margin: EdgeInsets.all(8.0),
-                        color: Colors.white24,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0)),
-                        child: new ListTile(
-                          title: Text(
-                            title.toString().toUpperCase(),
-                            style: new TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.greenAccent),
-                          ),
-                          subtitle: Text(
-                            "Concept available in $lang",
-                            style: new TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ConceptsDetail(
-                                      title: title,
-                                      description: description,
-                                      example: example,
-                                      lang: lang,
-                                    )));
-                          },
+                    return Card(
+                      margin: EdgeInsets.all(8.0),
+                      color: Colors.white24,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0)),
+                      child: new ListTile(
+                        title: Text(
+                          title.toString().toUpperCase(),
+                          style: new TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.greenAccent),
                         ),
-                      );
+                        subtitle: Text(
+                          "Concept available in $lang",
+                          style: new TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ConceptsDetail(
+                                    title: title,
+                                    description: description,
+                                    example: example,
+                                    lang: lang,
+                                  )));
+                        },
+                      ),
+                    );
                   }),
             );
           });
@@ -136,5 +115,3 @@ class _CodingConceptsState extends State<CodingConcepts> {
     }
   }
 }
-
-
