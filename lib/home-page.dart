@@ -178,18 +178,18 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 16.0),
               ),
             ),
-            new ListTile(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => CodingQuiz()));
-              },
-              leading: Icon(Icons.library_books),
-              title: Text(
-                "Coding Quiz",
-                style: TextStyle(fontSize: 16.0),
-              ),
-            ),
+            // new ListTile(
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     Navigator.of(context).push(
+            //         MaterialPageRoute(builder: (context) => CodingQuiz()));
+            //   },
+            //   leading: Icon(Icons.library_books),
+            //   title: Text(
+            //     "Coding Quiz",
+            //     style: TextStyle(fontSize: 16.0),
+            //   ),
+            // ),
             new ListTile(
               onTap: () {
                 Navigator.pop(context);

@@ -21,6 +21,7 @@ class _CodingConceptsState extends State<CodingConcepts> {
     crudObj.getConcepts().then((results) {
       setState(() {
         posts = results;
+        
       });
     });
   }
@@ -41,6 +42,8 @@ class _CodingConceptsState extends State<CodingConcepts> {
       myBanner
         ..load()
         ..show();
+    }).catchError((e) {
+      print(e);
     });
 
     return Scaffold(
