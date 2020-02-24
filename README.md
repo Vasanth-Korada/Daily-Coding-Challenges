@@ -2,7 +2,7 @@
 
 This app delivers daily coding challenges & concepts for your interview preparations
 
-![Feature Graphic](https://drive.google.com/open?id=11L6QXy9cJOKdEChxvrJrPaAOAEBrGa5Y)
+![Feature Graphic](https://ibb.co/tKkqKqY)
 
 # Features:
 # - Easy UI
