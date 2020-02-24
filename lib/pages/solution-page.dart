@@ -1,21 +1,18 @@
 import 'package:daily_coding_challenges/widgets/app-bar.dart';
-import 'package:daily_coding_challenges/widgets/share-widget.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
+import 'package:daily_coding_challenges/shared/admob.dart';
 
-import 'shared/admob.dart';
-
-class ConceptsDetail extends StatefulWidget {
+class SolutionPage extends StatefulWidget {
   final title;
-  final description;
-  final example;
-  final lang;
-  ConceptsDetail({this.title, this.description, this.example, this.lang});
+  final question;
+  final solution;
+  SolutionPage({this.title, this.question, this.solution});
   @override
-  _ConceptsDetailState createState() => _ConceptsDetailState();
+  _SolutionPageState createState() => _SolutionPageState();
 }
 
-class _ConceptsDetailState extends State<ConceptsDetail> {
+class _SolutionPageState extends State<SolutionPage> {
   @override
   Widget build(BuildContext context) {
     FirebaseAdMob.instance
@@ -23,7 +20,8 @@ class _ConceptsDetailState extends State<ConceptsDetail> {
         .then((response) {
       myBanner
         ..load()
-        ..show();
+        ..show(
+        );
     });
     return Scaffold(
         appBar: appBar("${widget.title}"),
@@ -31,14 +29,14 @@ class _ConceptsDetailState extends State<ConceptsDetail> {
           children: <Widget>[
             ExpansionTile(
               title: Text(
-                "${widget.title} in ${widget.lang}",
+                "${widget.title}",
                 style: TextStyle(fontSize: 24.0),
               ),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    "${widget.description}",
+                    "${widget.question}",
                     style: Theme.of(context).textTheme.body1,
                   ),
                 )
@@ -46,14 +44,14 @@ class _ConceptsDetailState extends State<ConceptsDetail> {
             ),
             ExpansionTile(
               title: Text(
-                "Example",
+                "Solution",
                 style: TextStyle(fontSize: 24.0),
               ),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    "${widget.example}",
+                    "${widget.solution}",
                     style: Theme.of(context).textTheme.body1,
                   ),
                 )
@@ -63,4 +61,3 @@ class _ConceptsDetailState extends State<ConceptsDetail> {
         ));
   }
 }
-

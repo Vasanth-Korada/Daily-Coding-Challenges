@@ -24,5 +24,8 @@ class CrudMethods {
   getConcepts() async {
     return Firestore.instance.collection('Concepts').snapshots();
   }
+  getArticles() async {
+    return Firestore.instance.collection('Articles').snapshots();
+  }
 
 }

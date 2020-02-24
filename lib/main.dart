@@ -1,11 +1,11 @@
-import 'package:daily_coding_challenges/signin-page.dart';
+import 'package:daily_coding_challenges/pages/signin-page.dart';
 import 'package:flutter/material.dart';
 import 'home-page.dart';
 
 void main() => runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Daily Coding Challenges",
-      home: HomePage(),//SignIn()
+      home: SignIn(), //SignIn()
       theme: ThemeData(
         fontFamily: 'Open Sans SemiBold',
         brightness: Brightness.dark,

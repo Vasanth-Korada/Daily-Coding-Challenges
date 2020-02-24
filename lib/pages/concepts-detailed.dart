@@ -1,19 +1,19 @@
 import 'package:daily_coding_challenges/widgets/app-bar.dart';
-import 'package:daily_coding_challenges/widgets/share-widget.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
-import 'shared/admob.dart';
+import 'package:daily_coding_challenges/shared/admob.dart';
 
-class SolutionPage extends StatefulWidget {
+class ConceptsDetail extends StatefulWidget {
   final title;
-  final question;
-  final solution;
-  SolutionPage({this.title, this.question, this.solution});
+  final description;
+  final example;
+  final lang;
+  ConceptsDetail({this.title, this.description, this.example, this.lang});
   @override
-  _SolutionPageState createState() => _SolutionPageState();
+  _ConceptsDetailState createState() => _ConceptsDetailState();
 }
 
-class _SolutionPageState extends State<SolutionPage> {
+class _ConceptsDetailState extends State<ConceptsDetail> {
   @override
   Widget build(BuildContext context) {
     FirebaseAdMob.instance
@@ -21,8 +21,7 @@ class _SolutionPageState extends State<SolutionPage> {
         .then((response) {
       myBanner
         ..load()
-        ..show(
-        );
+        ..show();
     });
     return Scaffold(
         appBar: appBar("${widget.title}"),
@@ -30,14 +29,14 @@ class _SolutionPageState extends State<SolutionPage> {
           children: <Widget>[
             ExpansionTile(
               title: Text(
-                "${widget.title}",
+                "${widget.title} in ${widget.lang}",
                 style: TextStyle(fontSize: 24.0),
               ),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    "${widget.question}",
+                    "${widget.description}",
                     style: Theme.of(context).textTheme.body1,
                   ),
                 )
@@ -45,14 +44,14 @@ class _SolutionPageState extends State<SolutionPage> {
             ),
             ExpansionTile(
               title: Text(
-                "Solution",
+                "Example",
                 style: TextStyle(fontSize: 24.0),
               ),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    "${widget.solution}",
+                    "${widget.example}",
                     style: Theme.of(context).textTheme.body1,
                   ),
                 )
@@ -62,3 +61,4 @@ class _SolutionPageState extends State<SolutionPage> {
         ));
   }
 }
+

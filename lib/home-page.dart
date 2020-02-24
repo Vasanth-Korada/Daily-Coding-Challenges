@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:daily_coding_challenges/coding-concepts.dart';
-import 'package:daily_coding_challenges/coding-quiz.dart';
+import 'package:daily_coding_challenges/pages/articles-page.dart';
+import 'package:daily_coding_challenges/pages/coding-concepts.dart';
 import 'package:daily_coding_challenges/widgets/share-widget.dart';
-import 'package:daily_coding_challenges/signin-page.dart';
-import 'package:daily_coding_challenges/solution-page.dart';
+import 'package:daily_coding_challenges/pages/signin-page.dart';
+import 'package:daily_coding_challenges/pages/solution-page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -172,24 +172,24 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => CodingConcepts()));
               },
-              leading: Icon(Icons.book),
+              leading: Icon(Icons.bubble_chart),
               title: Text(
                 "Coding Concepts",
                 style: TextStyle(fontSize: 16.0),
               ),
             ),
-            // new ListTile(
-            //   onTap: () {
-            //     Navigator.pop(context);
-            //     Navigator.of(context).push(
-            //         MaterialPageRoute(builder: (context) => CodingQuiz()));
-            //   },
-            //   leading: Icon(Icons.library_books),
-            //   title: Text(
-            //     "Coding Quiz",
-            //     style: TextStyle(fontSize: 16.0),
-            //   ),
-            // ),
+            new ListTile(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ArticlesPage()));
+              },
+              leading: Icon(Icons.library_books),
+              title: Text(
+                "Articles",
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ),
             new ListTile(
               onTap: () {
                 Navigator.pop(context);

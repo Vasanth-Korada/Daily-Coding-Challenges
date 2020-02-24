@@ -1,35 +1,33 @@
-import 'package:daily_coding_challenges/concepts-detailed.dart';
+import 'package:daily_coding_challenges/pages/articles-detail.dart';
+import 'package:daily_coding_challenges/pages/concepts-detailed.dart';
 import 'package:daily_coding_challenges/crud.dart';
 import 'package:daily_coding_challenges/widgets/app-bar.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
-import 'shared/admob.dart';
-import 'widgets/share-widget.dart';
-
-class CodingConcepts extends StatefulWidget {
+import 'package:daily_coding_challenges/shared/admob.dart';
+class ArticlesPage extends StatefulWidget {
   @override
-  _CodingConceptsState createState() => _CodingConceptsState();
+  _ArticlesPageState createState() => _ArticlesPageState();
 }
 
-class _CodingConceptsState extends State<CodingConcepts> {
+class _ArticlesPageState extends State<ArticlesPage> {
   CrudMethods crudObj = new CrudMethods();
-  var posts;
+  var articles;
 
   @override
   void initState() {
     super.initState();
-    crudObj.getConcepts().then((results) {
+    crudObj.getArticles().then((results) {
       setState(() {
-        posts = results;
-        
+        articles = results;  
       });
     });
   }
 
   Future<void> _onRefresh() async {
-    crudObj.getConcepts().then((results) {
+    crudObj.getArticles().then((results) {
       setState(() {
-        posts = results;
+        articles = results;
       });
     });
   }
@@ -47,15 +45,15 @@ class _CodingConceptsState extends State<CodingConcepts> {
     });
 
     return Scaffold(
-      appBar: appBar("Coding Concepts"),
+      appBar: appBar("Articles"),
       body: RefreshIndicator(onRefresh: _onRefresh, child: _dataList()),
     );
   }
 
   Widget _dataList() {
-    if (posts != null) {
+    if (articles != null) {
       return StreamBuilder(
-          stream: posts,
+          stream: articles,
           builder: (context, snapshot) {
             if (snapshot.data == null)
               return Padding(
@@ -72,8 +70,10 @@ class _CodingConceptsState extends State<CodingConcepts> {
                     var title = snapshot.data.documents[i].data['title'];
                     var description =
                         snapshot.data.documents[i].data['description'];
-                    var example = snapshot.data.documents[i].data['example'];
-                    var lang = snapshot.data.documents[i].data['lang'];
+                    var dateposted =
+                        snapshot.data.documents[i].data['dateposted'];
+                        var shortdesc =
+                        snapshot.data.documents[i].data['short_desc'];    
                     return Card(
                       margin: EdgeInsets.all(8.0),
                       color: Colors.white24,
@@ -88,7 +88,7 @@ class _CodingConceptsState extends State<CodingConcepts> {
                               color: Colors.greenAccent),
                         ),
                         subtitle: Text(
-                          "Concept available in $lang",
+                          "Date Posted: $dateposted",
                           style: new TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w600,
@@ -96,11 +96,11 @@ class _CodingConceptsState extends State<CodingConcepts> {
                         ),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ConceptsDetail(
+                              builder: (context) => ArticlesDetail(
                                     title: title,
                                     description: description,
-                                    example: example,
-                                    lang: lang,
+                                    dateposted: dateposted,
+                                    shortdesc: shortdesc,
                                   )));
                         },
                       ),
