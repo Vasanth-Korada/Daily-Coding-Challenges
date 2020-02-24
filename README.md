@@ -2,6 +2,8 @@
 
 This app delivers daily coding challenges & concepts for your interview preparations
 
+![Feature Graphic](https://ibb.co/6yjb7LW)
+
 # Features:
 # - Easy UI
 # - Daily Notifications
