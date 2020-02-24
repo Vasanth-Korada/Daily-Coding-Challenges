@@ -2,7 +2,7 @@
 
 This app delivers daily coding challenges & concepts for your interview preparations
 
-![Feature Graphic](..master/feature graphic.png)
+<img src="feature graphic.png" alt="My cool logo"/>
 
 # Features:
 # - Easy UI
