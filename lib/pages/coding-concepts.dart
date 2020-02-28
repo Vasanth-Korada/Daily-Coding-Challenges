@@ -4,6 +4,7 @@ import 'package:daily_coding_challenges/widgets/app-bar.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_coding_challenges/shared/admob.dart';
+
 class CodingConcepts extends StatefulWidget {
   @override
   _CodingConceptsState createState() => _CodingConceptsState();
@@ -18,7 +19,7 @@ class _CodingConceptsState extends State<CodingConcepts> {
     super.initState();
     crudObj.getConcepts().then((results) {
       setState(() {
-        posts = results;  
+        posts = results;
       });
     });
   }
@@ -62,15 +63,20 @@ class _CodingConceptsState extends State<CodingConcepts> {
                   backgroundColor: Color(0xFF5AFF15),
                 )),
               );
+            var length = snapshot.data.documents.length;
+
             return Scrollbar(
               child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, i) {
-                    var title = snapshot.data.documents[i].data['title'];
-                    var description =
-                        snapshot.data.documents[i].data['description'];
-                    var example = snapshot.data.documents[i].data['example'];
-                    var lang = snapshot.data.documents[i].data['lang'];
+                    var title =
+                        snapshot.data.documents[length - i - 1].data['title'];
+                    var description = snapshot
+                        .data.documents[length - i - 1].data['description'];
+                    var example =
+                        snapshot.data.documents[length - i - 1].data['example'];
+                    var lang =
+                        snapshot.data.documents[length - i - 1].data['lang'];
                     return Card(
                       margin: EdgeInsets.all(8.0),
                       color: Colors.white24,

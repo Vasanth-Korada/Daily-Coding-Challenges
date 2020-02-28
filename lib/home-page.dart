@@ -166,6 +166,26 @@ class _HomePageState extends State<HomePage> {
               accountEmail: Text("${widget.userEmail}"),
               accountName: Text("${widget.userName}".toUpperCase()),
             ),
+            Card(
+              margin: EdgeInsets.all(8.0),
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0)),
+              child: new ListTile(
+                title: Text(
+                  "Hi " +
+                      widget.userName.toString().split(" ")[0] +
+                      " 😃,\nWe are glad that you downloaded our app. And we are happy to inform you that we are striving hard in helping tech enthusiasts with the content in our own small way.",
+                  style: new TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.black),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: new Divider(color: Colors.white70,),
+            ),
             new ListTile(
               onTap: () {
                 Navigator.pop(context);
@@ -239,14 +259,20 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: Color(0xFF5AFF15),
                 )),
               );
+            var length = snapshot.data.documents.length;
+
             return Scrollbar(
               child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, i) {
-                    var title = snapshot.data.documents[i].data['title'];
-                    var question = snapshot.data.documents[i].data['question'];
-                    var solution = snapshot.data.documents[i].data['solution'];
-                    var soltype = snapshot.data.documents[i].data['soltype'];
+                    var title =
+                        snapshot.data.documents[length - i - 1].data['title'];
+                    var question = snapshot
+                        .data.documents[length - i - 1].data['question'];
+                    var solution = snapshot
+                        .data.documents[length - i - 1].data['solution'];
+                    var soltype =
+                        snapshot.data.documents[length - i - 1].data['soltype'];
                     return Card(
                       margin: EdgeInsets.all(8.0),
                       color: Colors.white24,

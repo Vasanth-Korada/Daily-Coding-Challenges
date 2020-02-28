@@ -64,18 +64,21 @@ class _ArticlesPageState extends State<ArticlesPage> {
                   backgroundColor: Color(0xFF5AFF15),
                 )),
               );
+            var length = snapshot.data.documents.length;
             return Scrollbar(
               child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, i) {
-                    var title = snapshot.data.documents[i].data['title'];
-                    var description =
-                        snapshot.data.documents[i].data['description'];
-                    var dateposted =
-                        snapshot.data.documents[i].data['dateposted'];
-                    var shortdesc =
-                        snapshot.data.documents[i].data['short_desc'];
-                    var imageurl = snapshot.data.documents[i].data['imageurl'];
+                    var title =
+                        snapshot.data.documents[length - i - 1].data['title'];
+                    var description = snapshot
+                        .data.documents[length - i - 1].data['description'];
+                    var dateposted = snapshot
+                        .data.documents[length - i - 1].data['dateposted'];
+                    var shortdesc = snapshot
+                        .data.documents[length - i - 1].data['short_desc'];
+                    var imageurl = snapshot
+                        .data.documents[length - i - 1].data['imageurl'];
                     return Card(
                       margin: EdgeInsets.all(8.0),
                       color: Colors.white24,

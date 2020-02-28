@@ -1,7 +1,7 @@
 name: daily_coding_challenges
 description: A new Flutter application.
 
-version: 1.0.4+6
+version: 1.0.5+9
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
