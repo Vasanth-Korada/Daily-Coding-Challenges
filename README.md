@@ -4,7 +4,7 @@ This app delivers daily coding challenges & concepts for your interview preparat
 
 # Google Play Link : https://play.google.com/store/apps/details?id=com.vktech.daily_coding_challenges
 
-<img src="assets/Daily Coding Challenges & Concepts.png" alt="Feature Graphic"/>
+<img src="assets/Daily Coding Challenges & Concepts1.png" alt="Feature Graphic"/>
 
 # Features:
 # - Easy UI
