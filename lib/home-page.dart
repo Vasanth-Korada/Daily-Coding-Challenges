@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_coding_challenges/pages/articles-page.dart';
-import 'package:daily_coding_challenges/pages/coding-concepts.dart';
+import 'package:daily_coding_challenges/pages/concepts-categories.dart';
+import 'package:daily_coding_challenges/shared/check-internet-connection.dart';
 import 'package:daily_coding_challenges/widgets/share-widget.dart';
 import 'package:daily_coding_challenges/pages/signin-page.dart';
 import 'package:daily_coding_challenges/pages/solution-page.dart';
@@ -29,7 +30,9 @@ class _HomePageState extends State<HomePage> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
   final Firestore _db = Firestore.instance;
   var posts;
-  Icon searchIcon = new Icon(Icons.search);
+  var welcomeMessage;
+
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   _launchRateUs() async {
     const url =
         'https://play.google.com/store/apps/details?id=com.vktech.daily_coding_challenges';
@@ -77,11 +80,20 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    checkInternetConnectivity(context).then((val) {
+      val == true ? ShowDialog(context) : print("Connected");
+    });
     crudObj.getData().then((results) {
       setState(() {
         posts = results;
       });
     });
+    _db.collection("Assets").document("welcomemessage").get().then((data) {
+      setState(() {
+        welcomeMessage = data["message"];
+      });
+    });
+
     _saveDeviceToken();
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
@@ -114,21 +126,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     FirebaseAdMob.instance
-        .initialize(appId: "ca-app-pub-8559543128044506~6027702558")
+        .initialize(appId: "ca-app-pub-8559543128044506/5082641766")
         .then((response) {
       myBanner
         ..load()
         ..show();
+    }).catchError((e) {
+      debugPrint(e);
     });
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          // InkWell(
-          //   child: IconButton(
-          //     onPressed: () {},
-          //     icon: searchIcon,
-          // //   ),
-          // ),
           InkWell(
             child: IconButton(
               onPressed: () {
@@ -175,22 +183,22 @@ class _HomePageState extends State<HomePage> {
                 title: Text(
                   "Hi " +
                       widget.userName.toString().split(" ")[0] +
-                      " 😃,\nWe are glad that you downloaded our app. And we are happy to inform you that we are striving hard in helping tech enthusiasts with the content in our own small way.",
-                  style: new TextStyle(
-                      fontSize: 13.0,
-                      color: Colors.black),
+                      " 😃,\n$welcomeMessage",
+                  style: new TextStyle(fontSize: 13.0, color: Colors.black),
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new Divider(color: Colors.white70,),
+              child: new Divider(
+                color: Colors.white70,
+              ),
             ),
             new ListTile(
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => CodingConcepts()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ConceptsCategories()));
               },
               leading: Icon(Icons.bubble_chart),
               title: Text(
@@ -247,65 +255,148 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _dataList() {
+    int selectedCounter = 0;
+    Color selectedColor = Colors.black;
     if (posts != null) {
-      return StreamBuilder(
-          stream: posts,
-          builder: (context, snapshot) {
-            if (snapshot.data == null)
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                    child: new LinearProgressIndicator(
-                  backgroundColor: Color(0xFF5AFF15),
-                )),
-              );
-            var length = snapshot.data.documents.length;
-
-            return Scrollbar(
-              child: ListView.builder(
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, i) {
-                    var title =
-                        snapshot.data.documents[length - i - 1].data['title'];
-                    var question = snapshot
-                        .data.documents[length - i - 1].data['question'];
-                    var solution = snapshot
-                        .data.documents[length - i - 1].data['solution'];
-                    var soltype =
-                        snapshot.data.documents[length - i - 1].data['soltype'];
-                    return Card(
-                      margin: EdgeInsets.all(8.0),
-                      color: Colors.white24,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: new ListTile(
-                        title: Text(
-                          title.toString().toUpperCase(),
-                          style: new TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.greenAccent),
-                        ),
-                        subtitle: Text(
-                          "Solution available in $soltype",
-                          style: new TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SolutionPage(
-                                    title: title,
-                                    question: question,
-                                    solution: solution,
-                                  )));
-                        },
-                      ),
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                new Text("Filter Languages :"),
+                Container(
+                  height: 37,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24.0),
+                      color: Colors.grey),
+                  child: new FlatButton(
+                    splashColor: Colors.black,
+                    onPressed: () {
+                      List languages = [
+                        "Python",
+                        "C",
+                        "C++",
+                        "Go",
+                        "Java",
+                        "JavaScript"
+                      ];
+                      List<bool> languagesColors = List.generate(6, (i) => false);
+                      debugPrint("Tapped");
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Column(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: new Text("Choose a Language"),
+                                ),
+                                Flexible(
+                                  child: Scrollbar(
+                                    child: ListView.builder(
+                                      itemCount: languages.length,
+                                      itemBuilder: (_, index) {
+                                        return Container(
+                                          color: languagesColors[index]?Colors.blue:null,
+                                          child: ListTile(
+                                            onTap: (){
+                                              setState(() {
+                                                languagesColors[index] = !languagesColors[index];
+                                              });
+                                            },
+                                            title: Text(
+                                            "${languages.elementAt(index)}"),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                new RaisedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Filter"),
+                                  color: Colors.green,
+                                ),
+                                new SizedBox(
+                                  height: 55.0,
+                                )
+                              ],
+                            );
+                          });
+                    },
+                    child: Text("Show Languages"),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Flexible(
+            child: StreamBuilder(
+                stream: posts,
+                builder: (context, snapshot) {
+                  if (snapshot.data == null)
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                          child: new LinearProgressIndicator(
+                        backgroundColor: Color(0xFF5AFF15),
+                      )),
                     );
-                  }),
-            );
-          });
+                  var length = snapshot.data.documents.length;
+                  return Scrollbar(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.documents.length,
+                        itemBuilder: (context, i) {
+                          var title = snapshot
+                              .data.documents[length - i - 1].data['title'];
+                          var question = snapshot
+                              .data.documents[length - i - 1].data['question'];
+                          var solution = snapshot
+                              .data.documents[length - i - 1].data['solution'];
+                          var soltype = snapshot
+                              .data.documents[length - i - 1].data['soltype'];
+                          return Card(
+                            margin: EdgeInsets.all(8.0),
+                            color: Colors.white24,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0)),
+                            child: new ListTile(
+                              title: Text(
+                                title.toString().toUpperCase(),
+                                style: new TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.greenAccent),
+                              ),
+                              subtitle: Text(
+                                "Solution available in $soltype",
+                                style: new TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => SolutionPage(
+                                          title: title,
+                                          question: question,
+                                          solution: solution,
+                                          soltype: soltype,
+                                        )));
+                              },
+                            ),
+                          );
+                        }),
+                  );
+                }),
+          ),
+        ],
+      );
     } else {
       return Padding(
         padding: const EdgeInsets.all(10.0),

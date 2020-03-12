@@ -1,7 +1,7 @@
 name: daily_coding_challenges
 description: A new Flutter application.
 
-version: 1.0.5+9
+version: 1.0.5+11
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  cloud_firestore: any
+  cloud_firestore: ^0.13.4+1
   firebase_messaging: ^5.0.2
   google_sign_in: ^4.1.1
   firebase_auth: ^0.15.3
@@ -20,8 +20,7 @@ dependencies:
   url_launcher: any
   share: ^0.6.3+5
   firebase_admob: ^0.9.0+10
-  rxdart: ^0.23.1
-  
+  connectivity: ^0.3.0
 
 dev_dependencies:
   flutter_test:

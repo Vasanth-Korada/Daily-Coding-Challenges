@@ -5,7 +5,7 @@ import 'home-page.dart';
 void main() => runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Daily Coding Challenges",
-      home: SignIn(), //SignIn()
+      home: HomePage(), //SignIn()
       theme: ThemeData(
         fontFamily: 'Open Sans SemiBold',
         brightness: Brightness.dark,

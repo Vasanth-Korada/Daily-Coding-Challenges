@@ -4,8 +4,11 @@ import 'package:daily_coding_challenges/widgets/app-bar.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_coding_challenges/shared/admob.dart';
-
+import 'package:daily_coding_challenges/shared/check-internet-connection.dart';
 class CodingConcepts extends StatefulWidget {
+  final conceptType;
+  final appbarTitle;
+  CodingConcepts({this.conceptType, this.appbarTitle});
   @override
   _CodingConceptsState createState() => _CodingConceptsState();
 }
@@ -16,12 +19,16 @@ class _CodingConceptsState extends State<CodingConcepts> {
 
   @override
   void initState() {
-    super.initState();
+    checkInternetConnectivity(context).then((val) {
+      val == true ? ShowDialog(context) : print("Connected");
+    });
     crudObj.getConcepts().then((results) {
       setState(() {
         posts = results;
       });
     });
+    super.initState();
+    
   }
 
   Future<void> _onRefresh() async {
@@ -35,7 +42,7 @@ class _CodingConceptsState extends State<CodingConcepts> {
   @override
   Widget build(BuildContext context) {
     FirebaseAdMob.instance
-        .initialize(appId: "ca-app-pub-8559543128044506~6027702558")
+        .initialize(appId: "ca-app-pub-8559543128044506/5082641766")
         .then((response) {
       myBanner
         ..load()
@@ -45,7 +52,7 @@ class _CodingConceptsState extends State<CodingConcepts> {
     });
 
     return Scaffold(
-      appBar: appBar("Coding Concepts"),
+      appBar: appBar("Concepts in ${widget.appbarTitle}"),
       body: RefreshIndicator(onRefresh: _onRefresh, child: _dataList()),
     );
   }
@@ -64,7 +71,6 @@ class _CodingConceptsState extends State<CodingConcepts> {
                 )),
               );
             var length = snapshot.data.documents.length;
-
             return Scrollbar(
               child: ListView.builder(
                   itemCount: snapshot.data.documents.length,
@@ -77,37 +83,40 @@ class _CodingConceptsState extends State<CodingConcepts> {
                         snapshot.data.documents[length - i - 1].data['example'];
                     var lang =
                         snapshot.data.documents[length - i - 1].data['lang'];
-                    return Card(
-                      margin: EdgeInsets.all(8.0),
-                      color: Colors.white24,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: new ListTile(
-                        title: Text(
-                          title.toString().toUpperCase(),
-                          style: new TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.greenAccent),
-                        ),
-                        subtitle: Text(
-                          "Concept available in $lang",
-                          style: new TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ConceptsDetail(
-                                    title: title,
-                                    description: description,
-                                    example: example,
-                                    lang: lang,
-                                  )));
-                        },
-                      ),
-                    );
+                    debugPrint(lang);
+                    return lang == widget.conceptType
+                        ? Card(
+                            margin: EdgeInsets.all(8.0),
+                            color: Colors.white24,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0)),
+                            child: new ListTile(
+                              title: Text(
+                                title.toString().toUpperCase(),
+                                style: new TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.greenAccent),
+                              ),
+                              subtitle: Text(
+                                "Concept available in $lang",
+                                style: new TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ConceptsDetail(
+                                          title: title,
+                                          description: description,
+                                          example: example,
+                                          lang: lang,
+                                        )));
+                              },
+                            ),
+                          )
+                        : Container();
                   }),
             );
           });

@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:daily_coding_challenges/shared/check-internet-connection.dart';
 
 class IsLogged {
   static bool isloggedin = false;
@@ -80,8 +81,11 @@ class _SignInState extends State<SignIn> {
 
   @override
   void initState() {
-    super.initState();
     autoLogIn();
+    checkInternetConnectivity(context).then((val) {
+      val == true ? ShowDialog(context) : print("Connected");
+    });
+    super.initState();
   }
 
   @override

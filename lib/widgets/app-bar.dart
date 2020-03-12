@@ -1,12 +1,12 @@
 import 'package:daily_coding_challenges/widgets/share-widget.dart';
 import 'package:flutter/material.dart';
 
-Widget appBar(String title) {
+Widget appBar(String title,{String shareTitle,String shareSubject}) {
   return AppBar(
     actions: <Widget>[
       IconButton(
         onPressed: () {
-          share();
+          share(title: shareTitle,subject: shareSubject);
         },
         icon: Icon(Icons.share),
       )

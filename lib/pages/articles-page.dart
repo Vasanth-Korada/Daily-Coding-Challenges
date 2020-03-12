@@ -1,5 +1,5 @@
 import 'package:daily_coding_challenges/pages/articles-detail.dart';
-import 'package:daily_coding_challenges/pages/concepts-detailed.dart';
+import 'package:daily_coding_challenges/shared/check-internet-connection.dart';
 import 'package:daily_coding_challenges/crud.dart';
 import 'package:daily_coding_challenges/widgets/app-bar.dart';
 import 'package:firebase_admob/firebase_admob.dart';
@@ -17,12 +17,15 @@ class _ArticlesPageState extends State<ArticlesPage> {
 
   @override
   void initState() {
-    super.initState();
+    checkInternetConnectivity(context).then((val) {
+      val == true ? ShowDialog(context) : print("Connected");
+    });
     crudObj.getArticles().then((results) {
       setState(() {
         articles = results;
       });
     });
+    super.initState();
   }
 
   Future<void> _onRefresh() async {
@@ -36,7 +39,7 @@ class _ArticlesPageState extends State<ArticlesPage> {
   @override
   Widget build(BuildContext context) {
     FirebaseAdMob.instance
-        .initialize(appId: "ca-app-pub-8559543128044506~6027702558")
+        .initialize(appId: "ca-app-pub-8559543128044506/5082641766")
         .then((response) {
       myBanner
         ..load()
@@ -79,48 +82,54 @@ class _ArticlesPageState extends State<ArticlesPage> {
                         .data.documents[length - i - 1].data['short_desc'];
                     var imageurl = snapshot
                         .data.documents[length - i - 1].data['imageurl'];
-                    return Card(
-                      margin: EdgeInsets.all(8.0),
-                      color: Colors.white24,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0)),
-                      child: Column(
-                        children: <Widget>[
-                          new Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.network(
-                                imageurl,
-                                fit: BoxFit.contain,
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ArticlesDetail(
+                                  title: title,
+                                  description: description,
+                                  dateposted: dateposted,
+                                  shortdesc: shortdesc,
+                                )));
+                      },
+                      child: Card(
+                        margin: EdgeInsets.all(8.0),
+                        color: Colors.white24,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Column(
+                          children: <Widget>[
+                            new Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: imageurl != ""
+                                    ? Image.network(
+                                        imageurl,
+                                        fit: BoxFit.contain,
+                                      )
+                                    : LinearProgressIndicator(
+                                        backgroundColor: Color(0xFF5AFF15),
+                                      ),
                               ),
                             ),
-                          ),
-                          new ListTile(
-                            title: Text(
-                              title.toString().toUpperCase(),
-                              style: new TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.greenAccent),
-                            ),
-                            subtitle: Text(
-                              "Date Posted: $dateposted",
-                              style: new TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600,
+                            new ListTile(
+                              title: Text(
+                                title.toString().toUpperCase(),
+                                style: new TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.greenAccent),
+                              ),
+                              subtitle: Text(
+                                "Date Posted: $dateposted",
+                                style: new TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ArticlesDetail(
-                                        title: title,
-                                        description: description,
-                                        dateposted: dateposted,
-                                        shortdesc: shortdesc,
-                                      )));
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   }),
