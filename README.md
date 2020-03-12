@@ -9,10 +9,10 @@ This app delivers daily coding challenges & concepts for your interview preparat
 # Features:
 # - Easy UI
 # - Daily Notifications
-# - Google Sign In with Auto Login
 # - Coding Challenges and solutions
-# - Coding Concepts and relevant examples
-# - Articles with images
+# - Categorized Coding Concepts and relevant examples
+# - Tech and Programming Articles
+# - Option to share challenges, concepts and letting them learn 😃
 
 <img src="assets/images/Copy of Daily Coding Challenges & Concepts.png" alt="Screens"/>
 
