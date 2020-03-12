@@ -12,7 +12,7 @@ This app delivers daily coding challenges & concepts for your interview preparat
 # - Coding Challenges and solutions
 # - Categorized Coding Concepts and relevant examples
 # - Tech and Programming Articles
-# - Option to share challenges, concepts with your friends and letting them learn 😃
+# - Option to share challenges & concepts with your friends and letting them learn 😃
 
 <img src="assets/images/Copy of Daily Coding Challenges & Concepts.png" alt="Screens"/>
 
