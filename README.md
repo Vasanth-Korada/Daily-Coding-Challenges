@@ -7,7 +7,7 @@ This app delivers daily coding challenges & concepts for your interview preparat
 <img src="assets/Daily Coding Challenges & Concepts1.png" alt="Feature Graphic"/>
 
 # Features:
-# - Easy UI
+# - Support over 6 Programming/Scripting Languages (Python, C, C++, Java, JavaScript,Go)
 # - Daily Notifications
 # - Coding Challenges and solutions
 # - Categorized Coding Concepts and relevant examples
