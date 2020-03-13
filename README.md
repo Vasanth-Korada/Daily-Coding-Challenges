@@ -1,6 +1,6 @@
 # Daily Coding Challenges
 
-This app delivers Daily Coding Challenges, Concepts and Articles for your interview preparations which works on both Android and iOS.
+This app delivers daily coding challenges, concepts & articles with relevant solutions and examples which might be helpful for your interview preparations and also in learning programming concepts and coding challenges which works on both Android and iOS.
 
 <h2>Google Play Link : https://play.google.com/store/apps/details?id=com.vktech.daily_coding_challenges</h2>
 
