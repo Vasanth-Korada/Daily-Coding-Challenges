@@ -8,7 +8,9 @@ class CrudMethods {
           Firestore.instance.collection('Posts');
       reference.add(data);
     });
+    
   }
+  
 
   Future<void> addToken(data) async {
     Firestore.instance.runTransaction((Transaction crudTransaction) async {
@@ -20,6 +22,9 @@ class CrudMethods {
 
   getData() async {
     return Firestore.instance.collection('Posts').snapshots();
+  }
+  getDataLength() async {
+    return Firestore.instance.collection('Posts').snapshots().length;
   }
   getConcepts() async {
     return Firestore.instance.collection('Concepts').snapshots();

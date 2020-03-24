@@ -54,7 +54,7 @@ class _SolutionPageState extends State<SolutionPage> {
                     "${widget.question}",
                     style: Theme.of(context).textTheme.body1,
                   ),
-                )
+                ),
               ],
             ),
             ExpansionTile(
@@ -71,7 +71,7 @@ class _SolutionPageState extends State<SolutionPage> {
                   ),
                 )
               ],
-            )
+            ),
           ],
         ));
   }

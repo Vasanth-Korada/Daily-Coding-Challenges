@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:daily_coding_challenges/pages/articles-page.dart';
 import 'package:daily_coding_challenges/pages/concepts-categories.dart';
+import 'package:daily_coding_challenges/pages/infy-tech.dart';
+import 'package:daily_coding_challenges/pages/send-a-request.dart';
 import 'package:daily_coding_challenges/shared/check-internet-connection.dart';
 import 'package:daily_coding_challenges/widgets/share-widget.dart';
 import 'package:daily_coding_challenges/pages/signin-page.dart';
@@ -14,6 +16,7 @@ import 'crud.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'shared/admob.dart';
+import 'pages/categorized-challenges.dart';
 
 class HomePage extends StatefulWidget {
   final userName;
@@ -29,8 +32,10 @@ class _HomePageState extends State<HomePage> {
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   final FirebaseMessaging _fcm = FirebaseMessaging();
   final Firestore _db = Firestore.instance;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var posts;
   var welcomeMessage;
+  var categories;
 
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   _launchRateUs() async {
@@ -62,6 +67,9 @@ class _HomePageState extends State<HomePage> {
         posts = results;
       });
     });
+    crudObj.getConceptsCategories().then((results) {
+      categories = results;
+    });
   }
 
   _saveDeviceToken() async {
@@ -83,11 +91,16 @@ class _HomePageState extends State<HomePage> {
     checkInternetConnectivity(context).then((val) {
       val == true ? ShowDialog(context) : print("Connected");
     });
+    crudObj.getConceptsCategories().then((results) {
+      categories = results;
+      debugPrint("Categories" + categories.toList().toString());
+    });
     crudObj.getData().then((results) {
       setState(() {
         posts = results;
       });
     });
+
     _db.collection("Assets").document("welcomemessage").get().then((data) {
       setState(() {
         welcomeMessage = data["message"];
@@ -131,9 +144,7 @@ class _HomePageState extends State<HomePage> {
       myBanner
         ..load()
         ..show();
-    }).catchError((e) {
-      debugPrint(e);
-    });
+    }).catchError((e) {});
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -188,65 +199,109 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: new Divider(
-                color: Colors.white70,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Divider(
+                  color: Colors.white70,
+                ),
               ),
             ),
-            new ListTile(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ConceptsCategories()));
-              },
-              leading: Icon(Icons.bubble_chart),
-              title: Text(
-                "Coding Concepts",
-                style: TextStyle(fontSize: 16.0),
+            Expanded(
+              flex: 45,
+              child: new ListView(
+                children: <Widget>[
+                  new ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ConceptsCategories()));
+                    },
+                    leading: Icon(Icons.bubble_chart),
+                    title: Text(
+                      "Coding Concepts",
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                  new ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ArticlesPage()));
+                    },
+                    leading: Icon(Icons.library_books),
+                    title: Text(
+                      "Articles",
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                  // new ListTile(
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //     Navigator.of(context).push(
+                  //         MaterialPageRoute(builder: (context) => INFYTECH()));
+                  //   },
+                  //   leading: Tab(
+                  //       icon: Container(
+                  //         height: 25.0,
+                  //         child: new Image.asset('assets/infy tech logo.png')
+                  //       )),
+                  //   title: Text(
+                  //     "INFY TECH",
+                  //     style: TextStyle(fontSize: 16.0),
+                  //   ),
+                  // ),
+                  new ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SendARequest(
+                                userEmail: widget.userEmail,
+                                userName: widget.userName,
+                              )));
+                    },
+                    leading: Icon(Icons.rate_review),
+                    title: Text(
+                      "Send a Request",
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+
+                  new ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      _launchRateUs();
+                    },
+                    leading: Icon(Icons.star),
+                    title: Text(
+                      "Rate Us",
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                  new ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      share();
+                    },
+                    leading: Icon(Icons.share),
+                    title: Text(
+                      "Share",
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                  new ListTile(
+                    onTap: () {
+                      _logout();
+                    },
+                    leading: Icon(Icons.power_settings_new),
+                    title: Text("Logout", style: TextStyle(fontSize: 16.0)),
+                  ),
+                  new SizedBox(
+                    height: 65.0,
+                  )
+                ],
               ),
             ),
-            new ListTile(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ArticlesPage()));
-              },
-              leading: Icon(Icons.library_books),
-              title: Text(
-                "Articles",
-                style: TextStyle(fontSize: 16.0),
-              ),
-            ),
-            new ListTile(
-              onTap: () {
-                Navigator.pop(context);
-                _launchRateUs();
-              },
-              leading: Icon(Icons.rate_review),
-              title: Text(
-                "Rate Us",
-                style: TextStyle(fontSize: 16.0),
-              ),
-            ),
-            new ListTile(
-              onTap: () {
-                Navigator.pop(context);
-                share();
-              },
-              leading: Icon(Icons.share),
-              title: Text(
-                "Share",
-                style: TextStyle(fontSize: 16.0),
-              ),
-            ),
-            new ListTile(
-              onTap: () {
-                _logout();
-              },
-              leading: Icon(Icons.power_settings_new),
-              title: Text("Logout", style: TextStyle(fontSize: 16.0)),
-            )
           ],
         ),
       ),
@@ -255,86 +310,65 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _dataList() {
-    int selectedCounter = 0;
-    Color selectedColor = Colors.black;
     if (posts != null) {
       return Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(6.0),
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                new Text("Filter Languages :"),
-                Container(
-                  height: 37,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24.0),
-                      color: Colors.grey),
-                  child: new FlatButton(
-                    splashColor: Colors.black,
-                    onPressed: () {
-                      List languages = [
-                        "Python",
-                        "C",
-                        "C++",
-                        "Go",
-                        "Java",
-                        "JavaScript"
-                      ];
-                      List<bool> languagesColors = List.generate(6, (i) => false);
-                      debugPrint("Tapped");
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Column(
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: new Text("Choose a Language"),
-                                ),
-                                Flexible(
-                                  child: Scrollbar(
-                                    child: ListView.builder(
-                                      itemCount: languages.length,
-                                      itemBuilder: (_, index) {
-                                        return Container(
-                                          color: languagesColors[index]?Colors.blue:null,
-                                          child: ListTile(
-                                            onTap: (){
-                                              setState(() {
-                                                languagesColors[index] = !languagesColors[index];
-                                              });
-                                            },
-                                            title: Text(
-                                            "${languages.elementAt(index)}"),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                new RaisedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text("Filter"),
-                                  color: Colors.green,
-                                ),
-                                new SizedBox(
-                                  height: 55.0,
-                                )
-                              ],
-                            );
-                          });
-                    },
-                    child: Text("Show Languages"),
-                  ),
-                )
-              ],
-            ),
+            child: new Text("Filter by Languages"),
           ),
-          Flexible(
+          Expanded(
+            child: StreamBuilder(
+                stream: categories,
+                builder: (context, snapshot) {
+                  if (snapshot.data == null)
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                          child: new LinearProgressIndicator(
+                        backgroundColor: Color(0xFF5AFF15),
+                      )),
+                    );
+                  return Scrollbar(
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data['names'].length,
+                        itemBuilder: (context, i) {
+                          var challengeType = snapshot.data.data['names'];
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new SizedBox(
+                                width: 10.0,
+                              ),
+                              new RaisedButton(
+                                color: Colors.white,
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                      new MaterialPageRoute(
+                                          builder: (context) =>
+                                              CategorizedChallenges(
+                                                challengeType: challengeType[i],
+                                                appbarTitle:
+                                                    "Challenges in ${challengeType[i]}",
+                                              )));
+                                },
+                                child: Text(
+                                  challengeType[i],
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              new SizedBox(
+                                width: 5.0,
+                              )
+                            ],
+                          );
+                        }),
+                  );
+                }),
+          ),
+          Expanded(
+            flex: 8,
             child: StreamBuilder(
                 stream: posts,
                 builder: (context, snapshot) {
@@ -394,6 +428,9 @@ class _HomePageState extends State<HomePage> {
                         }),
                   );
                 }),
+          ),
+          new SizedBox(
+            height: 60.0,
           ),
         ],
       );

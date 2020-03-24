@@ -59,66 +59,76 @@ class _ConceptsCategoriesState extends State<ConceptsCategories> {
 
   Widget _categoriesList() {
     if (categories != null) {
-      return StreamBuilder(
-          stream: categories,
-          builder: (context, snapshot) {
-            if (snapshot.data == null)
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                    child: new LinearProgressIndicator(
-                  backgroundColor: Color(0xFF5AFF15),
-                )),
-              );
-            return Scrollbar(
-              child: ListView.builder(
-                  itemCount: snapshot.data['names'].length,
-                  itemBuilder: (context, i) {
-                    var conceptType = snapshot.data.data['names'];
-                    return GestureDetector(
-                      onTap: () {
-                        debugPrint(conceptType[i]);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CodingConcepts(
-                                  conceptType: conceptType[i],
-                                  appbarTitle: conceptType[i],
-                                )));
-                      },
-                      child: Card(
-                        margin: EdgeInsets.all(8.0),
-                        color: Colors.white24,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0)),
-                        child: Column(
-                          children: <Widget>[
-                            imageurl[conceptType[i]] != ""
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.network(
-                                      imageurl[conceptType[i]],
-                                      fit: BoxFit.fitWidth,
+      return Column(
+        children: <Widget>[
+          Flexible(
+                  child: StreamBuilder(
+                stream: categories,
+                builder: (context, snapshot) {
+                  if (snapshot.data == null)
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                          child: new LinearProgressIndicator(
+                        backgroundColor: Color(0xFF5AFF15),
+                      )),
+                    );
+                  return Scrollbar(
+                    child: ListView.builder(
+                      
+                        itemCount: snapshot.data['names'].length,
+                        itemBuilder: (context, i) {
+                          var conceptType = snapshot.data.data['names'];
+                          return GestureDetector(
+                            onTap: () {
+                              debugPrint(conceptType[i]);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => CodingConcepts(
+                                        conceptType: conceptType[i],
+                                        appbarTitle: conceptType[i],
+                                      )));
+                            },
+                            child: Card(
+                              margin: EdgeInsets.all(8.0),
+                              color: Colors.white24,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0)),
+                              child: Column(
+                                children: <Widget>[
+                                  imageurl[conceptType[i]] != ""
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.network(
+                                            imageurl[conceptType[i]],
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                        )
+                                      : LinearProgressIndicator(
+                                          backgroundColor: Color(0xFF5AFF15),
+                                        ),
+                                  new ListTile(
+                                    title: Text(
+                                      conceptType[i].toString().toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.greenAccent),
                                     ),
-                                  )
-                                : LinearProgressIndicator(
-                                    backgroundColor: Color(0xFF5AFF15),
                                   ),
-                            new ListTile(
-                              title: Text(
-                                conceptType[i].toString().toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: new TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.greenAccent),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-            );
-          });
+                          );
+                        }),
+                  );
+                }),
+          ),
+          new SizedBox(
+            height: 65.0,
+          ),
+        ],
+      );
     } else {
       return Padding(
         padding: const EdgeInsets.all(10.0),
